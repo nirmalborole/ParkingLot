@@ -10,11 +10,29 @@ import java.util.List;
 
 public class WeekEndStrategy implements CalculateFeeStrategy{
     private SlabRepository slabRepository;
+
+    public WeekEndStrategy(SlabRepository slabRepository) {
+        this.slabRepository = slabRepository;
+    }
+
     @Override
     public double calculateFees(Date entryTime, Date exitTime, VehicleType vehicleType) {
         List<Slab> slabs = slabRepository.getSlabsByVehicleType(vehicleType);
         int hours = DateTimeUtil.calculateHour(entryTime, exitTime);
-
-        return 0;
+        double totalAmount=0;
+        for (Slab slab : slabs) {
+            if(hours >= slab.getStatHour()&& slab.getEndHour() != -1){
+                if(hours >= slab.getEndHour()){
+                   totalAmount+=(slab.getEndHour()-slab.getStatHour())*slab.getPricePerhour();
+                }else {
+                    totalAmount+= (hours-slab.getStatHour())* slab.getPricePerhour();
+                }
+            }else if(slab.getEndHour() == -1){
+                totalAmount+=(hours-slab.getStatHour())*slab.getPricePerhour();
+            }else {
+                break;
+            }
+        }
+        return totalAmount;
     }
 }

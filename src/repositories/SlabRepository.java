@@ -27,6 +27,7 @@ public class SlabRepository {
                 slabs.add(value);
             }
         }
+        slabs.sort((o1,o2)-> o1.getStatHour()-o2.getStatHour());
         return slabs;
     }
 }

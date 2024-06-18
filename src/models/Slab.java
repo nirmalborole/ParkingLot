@@ -6,6 +6,14 @@ public class Slab extends BaseModel{
     private int endHour;
     private double pricePerhour;
 
+    public Slab(int id,VehicleType vehicleType, int statHour, int endHour, double pricePerhour) {
+        setId(id);
+        this.vehicleType = vehicleType;
+        this.statHour = statHour;
+        this.endHour = endHour;
+        this.pricePerhour = pricePerhour;
+    }
+
     public VehicleType getVehicleType() {
         return vehicleType;
     }
